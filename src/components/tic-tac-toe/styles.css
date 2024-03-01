@@ -12,3 +12,8 @@
     height: 100px;
     padding: 10px 24px;
 }
+
+.status {
+    font-size: 20px;
+    font-weight: 700;
+}

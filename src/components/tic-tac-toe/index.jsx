@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./styles.css";
 
 function Button({ value, onClick }) {
@@ -14,16 +14,60 @@ export default function TicTacToe() {
   const [isXTurn, setIsXTurn] = useState(true);
   const [status, setStatus] = useState("");
 
+  // 0 1 2
+  // 3 4 5
+  // 6 7 8
+
+  function getWinerValues(squares) {
+    const winnerInputs = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+      [0, 3, 6],
+      [1, 4, 7],
+    ];
+
+    for (let i = 0; i < winnerInputs.length; i++) {
+      let [x, y, z] = winnerInputs[i];
+
+      if (
+        squares[x] &&
+        squares[x] === squares[y] &&
+        squares[x] === squares[z]
+      ) {
+        return squares[x];
+      }
+    }
+
+    return null;
+  }
+
   function handleClick(getCurrentCell) {
     const cpyCells = [...values];
 
-    if (cpyCells[getCurrentCell]) return null;
+    if (getWinerValues(cpyCells) && cpyCells[getCurrentCell]) return null;
 
     cpyCells[getCurrentCell] = isXTurn ? "X" : "O";
-
     setIsXTurn(!isXTurn);
     setValues(cpyCells);
   }
+
+  function handleRestart() {
+    setValues(Array(9).fill(""));
+  }
+
+  useEffect(() => {
+    if (!getWinerValues(values) && values.every((item) => item !== "")) {
+      setStatus(`This is a draw! Please restart the game`);
+    } else if (getWinerValues(values)) {
+      setStatus(`Winner is ${getWinerValues(values)}`);
+    } else {
+      setStatus(`Next player turn is ${isXTurn ? "X" : "O"}`);
+    }
+  }, [values, isXTurn]);
 
   console.log(values);
 
@@ -46,6 +90,9 @@ export default function TicTacToe() {
         <Button value={values[7]} onClick={() => handleClick(7)} />
         <Button value={values[8]} onClick={() => handleClick(8)} />
       </div>
+
+      {<p className="status">{status}</p>}
+      <button onClick={handleRestart}>Restart the game</button>
     </div>
   );
 }
