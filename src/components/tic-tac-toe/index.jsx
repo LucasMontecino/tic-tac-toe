@@ -5,6 +5,7 @@ import "./styles.css";
 export default function TicTacToe() {
   const [squares, setSquares] = useState(Array(9).fill(""));
   const [isXTurn, setIsXTurn] = useState(true);
+  const [status, setStatus] = useState("");
 
   function handleClick(getCurrentSquare) {
     let cpySquares = [...squares];
@@ -48,7 +49,9 @@ export default function TicTacToe() {
     return null;
   }
 
-  useEffect(() => {}, [squares, isXTurn]);
+  useEffect(() => {
+    if(getWinnerGame(squares))
+  }, [squares, isXTurn]);
 
   console.log(squares);
 
