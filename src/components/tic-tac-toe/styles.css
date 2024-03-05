@@ -24,7 +24,8 @@
     border-radius: 8px;
     transition: all 0.5s;
     color: #212121;
-    font-size: 26px;
+    font-size: 50px;
+    font-weight: bold;
 }
 
 .squares:hover {
@@ -33,4 +34,28 @@
 
 .options-container {
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+}
+
+.status {
+    color: #fff;
+    font-size: 32px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.reset {
+    padding: 10px;
+    font-size: 22px;
+    border-radius: 8px;
+    font-weight: 400;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    transition: all 0.5s;
+    border: none;
+}
+
+.reset:hover {
+    background-color: #ccc;
 }

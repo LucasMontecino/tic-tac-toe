@@ -19,6 +19,7 @@ export default function TicTacToe() {
   }
 
   function handleReset() {
+    setIsXTurn(true);
     setSquares(Array(9).fill(""));
   }
 
@@ -50,7 +51,20 @@ export default function TicTacToe() {
   }
 
   useEffect(() => {
-    if(getWinnerGame(squares))
+    if (getWinnerGame(squares)) {
+      setStatus(
+        `The Winner is the player ${getWinnerGame(
+          squares
+        )}. Please reset the game!`
+      );
+    } else if (
+      !getWinnerGame(squares) &&
+      squares.every((item) => item !== "")
+    ) {
+      setStatus("It's a draw! No winner. Please reset the game.");
+    } else {
+      setStatus(`Next player turn is ${isXTurn ? "X" : "O"}`);
+    }
   }, [squares, isXTurn]);
 
   console.log(squares);
@@ -74,6 +88,7 @@ export default function TicTacToe() {
       </div>
 
       <div className="options-container">
+        <p className="status">{status}</p>
         <button className="reset" onClick={handleReset}>
           Reset The Game
         </button>
