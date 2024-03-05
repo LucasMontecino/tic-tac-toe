@@ -1,19 +1,36 @@
-.row {
+*,
+*::before,
+*::after {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.tic-tac-toe-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #242424;
+    height: 100vh;
 }
 
-.cell {
-    border: 1px solid #ccc;
-    font-size: 3em;
-    color: #fff;
-    width: 100px;
-    height: 100px;
-    padding: 10px 24px;
+.row {
+    display: flex;
 }
 
-.status {
-    font-size: 20px;
-    font-weight: 700;
+.squares {
+    width: 130px;
+    height: 130px;
+    border-radius: 8px;
+    transition: all 0.5s;
+    color: #212121;
+    font-size: 26px;
+}
+
+.squares:hover {
+    background-color: #ccc;
+}
+
+.options-container {
+    margin-top: 20px;
 }

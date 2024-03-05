@@ -1,37 +1,40 @@
 import { useEffect, useState } from "react";
+import Squares from "./squares";
 import "./styles.css";
 
-function Button({ value, onClick }) {
-  return (
-    <button onClick={onClick} className="cell">
-      {value}
-    </button>
-  );
-}
-
 export default function TicTacToe() {
-  const [values, setValues] = useState(Array(9).fill(""));
+  const [squares, setSquares] = useState(Array(9).fill(""));
   const [isXTurn, setIsXTurn] = useState(true);
-  const [status, setStatus] = useState("");
 
-  // 0 1 2
-  // 3 4 5
-  // 6 7 8
+  function handleClick(getCurrentSquare) {
+    let cpySquares = [...squares];
 
-  function getWinerValues(squares) {
-    const winnerInputs = [
+    if (cpySquares[getCurrentSquare]) return null;
+
+    cpySquares[getCurrentSquare] = isXTurn ? "X" : "O";
+
+    setIsXTurn(!isXTurn);
+    setSquares(cpySquares);
+  }
+
+  function handleReset() {
+    setSquares(Array(9).fill(""));
+  }
+
+  function getWinnerGame(squares) {
+    const winnerRules = [
       [0, 1, 2],
       [3, 4, 5],
       [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
       [2, 5, 8],
       [0, 4, 8],
       [2, 4, 6],
-      [0, 3, 6],
-      [1, 4, 7],
     ];
 
-    for (let i = 0; i < winnerInputs.length; i++) {
-      let [x, y, z] = winnerInputs[i];
+    for (let i = 0; i < winnerRules.length; i++) {
+      const [x, y, z] = winnerRules[i];
 
       if (
         squares[x] &&
@@ -45,54 +48,33 @@ export default function TicTacToe() {
     return null;
   }
 
-  function handleClick(getCurrentCell) {
-    const cpyCells = [...values];
+  useEffect(() => {}, [squares, isXTurn]);
 
-    if (getWinerValues(cpyCells) && cpyCells[getCurrentCell]) return null;
-
-    cpyCells[getCurrentCell] = isXTurn ? "X" : "O";
-    setIsXTurn(!isXTurn);
-    setValues(cpyCells);
-  }
-
-  function handleRestart() {
-    setValues(Array(9).fill(""));
-  }
-
-  useEffect(() => {
-    if (!getWinerValues(values) && values.every((item) => item !== "")) {
-      setStatus(`This is a draw! Please restart the game`);
-    } else if (getWinerValues(values)) {
-      setStatus(`Winner is ${getWinerValues(values)}`);
-    } else {
-      setStatus(`Next player turn is ${isXTurn ? "X" : "O"}`);
-    }
-  }, [values, isXTurn]);
-
-  console.log(values);
+  console.log(squares);
 
   return (
     <div className="tic-tac-toe-container">
       <div className="row">
-        <Button value={values[0]} onClick={() => handleClick(0)} />
-        <Button value={values[1]} onClick={() => handleClick(1)} />
-        <Button value={values[2]} onClick={() => handleClick(2)} />
+        <Squares value={squares[0]} onClick={() => handleClick(0)} />
+        <Squares value={squares[1]} onClick={() => handleClick(1)} />
+        <Squares value={squares[2]} onClick={() => handleClick(2)} />
       </div>
-
       <div className="row">
-        <Button value={values[3]} onClick={() => handleClick(3)} />
-        <Button value={values[4]} onClick={() => handleClick(4)} />
-        <Button value={values[5]} onClick={() => handleClick(5)} />
+        <Squares value={squares[3]} onClick={() => handleClick(3)} />
+        <Squares value={squares[4]} onClick={() => handleClick(4)} />
+        <Squares value={squares[5]} onClick={() => handleClick(5)} />
       </div>
-
       <div className="row">
-        <Button value={values[6]} onClick={() => handleClick(6)} />
-        <Button value={values[7]} onClick={() => handleClick(7)} />
-        <Button value={values[8]} onClick={() => handleClick(8)} />
+        <Squares value={squares[6]} onClick={() => handleClick(6)} />
+        <Squares value={squares[7]} onClick={() => handleClick(7)} />
+        <Squares value={squares[8]} onClick={() => handleClick(8)} />
       </div>
 
-      {<p className="status">{status}</p>}
-      <button onClick={handleRestart}>Restart the game</button>
+      <div className="options-container">
+        <button className="reset" onClick={handleReset}>
+          Reset The Game
+        </button>
+      </div>
     </div>
   );
 }
